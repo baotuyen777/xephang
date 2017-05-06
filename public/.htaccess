@@ -1,0 +1,11 @@
+RewriteEngine on
+
+RewriteBase /
+RewriteCond %{REQUEST_URI} ^/files/(.*\.jpg|gif|png|jpeg|pdf|xls|xlsx|doc|docs)$ [NC]
+RewriteRule .*	http://img.zinnia.vn/files/%1 [L,R]
+
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule !\.(js|ico|gif|jpg|png|css|pdf|xls|xlsx|doc|docs)$ index.php
+
+

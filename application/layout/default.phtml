@@ -1,0 +1,60 @@
+<html lang="en-US">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Phần mềm nội bộ Thu Cúc</title>
+        <link rel="stylesheet" href="/css/bootstrap.min.css">
+        <link rel="stylesheet" href="/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/css/select2.min.css">
+        <link rel="stylesheet" href="/css/bootstrap-datetimepicker.css">
+        <link rel="stylesheet" href="/css/style.css" type="text/css" media="all" />
+
+        <script src="<?= NODE_SERVER ?>/socket.io/socket.io.js"></script>
+        <script src="/js/jquery-1.11.3.min.js"></script>
+        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/select2.min.js"></script>
+        <script src="/js/moment-with-locales.js"></script>
+        <script src="/js/bootstrap-datetimepicker.js"></script>
+        <script src="/js/jquery-sortable.js"></script>
+    </head>
+    <body>
+        <?php if (!$isQueue || $isQueue != 2): ?>
+            <nav class="navbar navbar-default" role="navigation">
+                <div class="container">
+                    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                        <ul class="nav navbar-nav">
+                            <?php
+                            $menu = require_once APP_PATH . ('config/menu.php');
+                            $permission = require APP_PATH . ('config/permission.php');
+                            if (array_key_exists($user->uid, $permission)) {
+                                $menu = $menu[1];
+                            } else {
+                                $menu = $menu[2];
+                            }
+                            ?>
+                            <?php foreach ($menu as $key => $value): ?>
+                                <li><a href="<?= $key ?>"><?= $value ?></a></li>
+                            <?php endforeach; ?>
+                        </ul>
+
+                        <ul class="nav navbar-nav navbar-right">
+                            <li class="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="Premium Bootstrap Themes &amp; Templates"><i class="fa fa-star text-yellow"></i> Chào <?= $user->name ?> <b class="caret"></b></a>
+                                <ul class="dropdown-menu">
+
+                                    <li>
+                                        <a href="/user/logout">Thoát</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+        <?php endif; ?>
+        <div class="container" id="bodyShow">
+            <?= $content ?>
+        </div>
+        
+    </body>
+</html>

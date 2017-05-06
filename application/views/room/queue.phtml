@@ -1,0 +1,255 @@
+<?php
+$room = require_once APP_PATH . ('config/room.php');
+?>
+<style type="text/css">
+    .showContent{
+        height:450px;
+        overflow-y:scroll;
+        overflow: hidden;
+        margin-top: -20px;
+    }
+    #slideAdv {
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background: #ccc
+    }
+
+    .carousel-fade .carousel-inner .item {
+        opacity: 0;
+        transition-property: opacity;
+        -webkit-transition: opacity 1s; /*adjust timing here */
+        -moz-transition: opacity 1s;
+        -o-transition: opacity 1s;
+        transition: opacity 1.9s;
+    }
+    .carousel-fade .carousel-inner .active {
+        opacity: 1;
+    }
+    .carousel-fade .carousel-inner .active.left,
+    .carousel-fade .carousel-inner .active.right {
+        left: 0;
+        opacity: 0;
+        z-index: 1;
+    }
+    .carousel-fade .carousel-inner .next.left,
+    .carousel-fade .carousel-inner .prev.right {
+        opacity: 1;
+    }
+    .carousel-fade .carousel-control {
+        z-index: 2;
+    }
+</style>
+<img src="/images/logo.jpg"><strong style="font-size: 50px;margin-left: 25px;float:right;"><?= $room[$r] ?></strong><br>
+<div style="float: right;margin-bottom: 40px;margin-top: -40px;"><div class="ColorPicker_com_colorSlider_colorPreview" style="position: absolute;background-color: forestgreen;width: 30px;height: 30px;"></div><strong style="margin-left: 40px;">Đang khám</strong></div>
+
+<div class="col-md-6" style="margin-top: 18px;">
+    <strong style="font-size: 24px;">Khách khám thường</strong>
+    <table class="table table-striped table-bordered sorted_table" style="margin-top: 1%;">
+        <thead>
+            <tr style="font-size: 20px;height: 75px;">
+                <th style="font-size: 20px;">STT</th>
+                <th style="font-size: 20px;">Tên Bệnh nhân</th>
+                <th style="font-size: 20px;">Giới tính</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $b = $bNhan[0]; ?>
+            <tr style="color: white;font-size: 20px;height: 75px;<?php if ($b->status == 1): ?>background-color: forestgreen;<?php endif; ?>">
+                <td style="font-size: 20px;width: 130px;">1</td>
+                <td style="font-size: 20px;"><?= $b->TEN_BNHAN ?></td>
+                <td style="font-size: 20px;width: 101px;"><?php
+                    if ($b->GIOI_TINH == 'M') {
+                        echo "Nam";
+                    } else {
+                        echo "Nữ";
+                    }
+                    ?></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="showContent">
+        <table class="table table-striped table-bordered sorted_table">
+            <thead>
+
+            </thead>
+            <tbody id="drapTable">
+                <?php if ($bNhan[0]->status == 0): ?>
+                    <tr style="font-size: 20px;height: 75px;">
+                        <td style="font-size: 20px;width: 130px;">1</td>
+                        <td style="font-size: 20px;"><?= $bNhan[0]->TEN_BNHAN ?></td>
+                        <td style="font-size: 20px;width: 100px;"><?php
+                            if ($bNhan[0]->GIOI_TINH == 'M') {
+                                echo "Nam";
+                            } else {
+                                echo "Nữ";
+                            }
+                            ?></td>
+                    </tr>
+                <?php endif; ?>
+                <?php
+                $count = 0;
+                foreach ($bNhan as $b):
+                    $count++;
+                    if ($count > 1):
+                        ?>
+                        <tr style="font-size: 20px;height: 75px;">
+                            <td style="font-size: 20px;width: 130px;"><?= $count ?></td>
+                            <td style="font-size: 20px;"><?= $b->TEN_BNHAN ?></td>
+                            <td style="font-size: 20px;width: 100px;"><?php
+                                if ($b->GIOI_TINH == 'M') {
+                                    echo "Nam";
+                                } else {
+                                    echo "Nữ";
+                                }
+                                ?></td>
+                        </tr>
+                        <?php
+                    endif;
+                endforeach;
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="col-md-6">
+    <strong style="font-size: 24px;">Khách đặt hẹn</strong>
+    <table class="table table-striped table-bordered sorted_table" style="margin-top: 1%;">
+        <thead>
+            <tr style="font-size: 20px;height: 75px;">
+                <th style="font-size: 20px;">STT</th>
+                <th style="font-size: 20px;">Tên Bệnh nhân</th>
+                <th style="font-size: 20px;">Giới tính</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php $bb = $vip[0]; ?>
+            <tr style="color: white;font-size: 20px;height: 75px;<?php if ($bb->status == 1): ?>background-color: forestgreen;<?php endif; ?>">
+                <td style="font-size: 20px;width: 130px;">1</td>
+                <td style="font-size: 20px;"><?= $bb->TEN_BNHAN ?></td>
+                <td style="font-size: 20px;width: 101px;"><?php
+                    if ($bb->GIOI_TINH == 'M') {
+                        echo "Nam";
+                    } else {
+                        echo "Nữ";
+                    }
+                    ?></td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="showContent">
+        <table class="table table-striped table-bordered sorted_table">
+            <thead>
+
+            </thead>
+            <tbody id="drapTable">
+                <?php if ($vip[0]->status == 0): ?>
+                    <tr style="font-size: 20px;height: 75px;">
+                        <td style="font-size: 20px;width: 130px;">1</td>
+                        <td style="font-size: 20px;"><?= $vip[0]->TEN_BNHAN ?></td>
+                        <td style="font-size: 20px;width: 100px;"><?php
+                            if ($vip[0]->GIOI_TINH == 'M') {
+                                echo "Nam";
+                            } else {
+                                echo "Nữ";
+                            }
+                            ?></td>
+                    </tr>
+                <?php endif; ?>
+                <?php
+                $count = 0;
+                foreach ($vip as $bb):
+                    $count++;
+                    if ($count > 1):
+                        ?>
+                        <tr style="font-size: 20px;height: 75px;">
+                            <td style="font-size: 20px;width: 130px;"><?= $count ?></td>
+                            <td style="font-size: 20px;"><?= $bb->TEN_BNHAN ?></td>
+                            <td style="font-size: 20px;width: 100px;"><?php
+                                if ($bb->GIOI_TINH == 'M') {
+                                    echo "Nam";
+                                } else {
+                                    echo "Nữ";
+                                }
+                                ?></td>
+                        </tr>
+                        <?php
+                    endif;
+                endforeach;
+                ?>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!--slideadv-->
+<div id="slideAdv" class="carousel slide carousel-fade" data-ride="carousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        <li data-target="#slideAdv" data-slide-to="0" class="active"></li>
+        <li data-target="#slideAdv" data-slide-to="1"></li>
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+
+        <div class="item active">
+            <img src="https://www.w3schools.com/bootstrap/chicago.jpg" alt="Los Angeles" style="width:100%;">
+            <div class="carousel-caption">
+                <h3>Los Angeles</h3>
+                <p>LA is always so much fun!</p>
+            </div>
+        </div>
+
+        <div class="item">
+            <img src="https://www.w3schools.com/bootstrap/chicago.jpg" alt="Chicago" style="width:100%;">
+            <div class="carousel-caption">
+                <h3>Chicago</h3>
+                <p>Thank you, Chicago!</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Left and right controls -->
+    <!--        <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+                <span class="glyphicon glyphicon-chevron-left"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="right carousel-control" href="#myCarousel" data-slide="next">
+                <span class="glyphicon glyphicon-chevron-right"></span>
+                <span class="sr-only">Next</span>
+            </a>-->
+</div>
+<script>
+//    var socket = io.connect('<?= NODE_SERVER ?>');
+//
+//    socket.on('chatMessage', function (msg) {
+//        console.log("here");
+//        if (msg == "swap" || msg == "callBNhan" || msg == "pushBNhan") {
+//            location.reload();
+//        }
+//    });
+</script>
+<script>
+    //slider
+    $('.carousel').carousel({
+        interval: 5000,
+        pause: "false",
+
+    });
+
+    var div = $('.showContent');
+    var cachePos = -1;
+    setInterval(function () {
+        var pos = div.scrollTop();
+        div.scrollTop(pos + 2);
+        if (pos != cachePos) {
+            cachePos = pos;
+        } else {
+            div.scrollTop(0);
+            cachePos = -1;
+        }
+    }, 150);
+</script>

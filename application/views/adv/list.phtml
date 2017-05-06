@@ -1,0 +1,158 @@
+<style type="text/css">
+    .img-list{
+        max-height: 50px;
+    }
+    .adv_list td{
+        vertical-align: middle !important;
+    }
+    #image{
+        max-height: 200px;
+        margin: 20px;
+    }
+</style>
+<div class="page-header">
+    <h3>Danh sách quảng cáo</h3>
+</div>
+<div class="col-md-12" style="padding-left:0">
+    <!--<a href="<?= APP_URL ?>/adv/detail" class="btn btn-success"></a>-->
+    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalAdd">Thêm mới</button>
+    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalSetting">Cài đặt</button>
+    <hr/>
+    <table class="table table-striped table-bordered sorted_table adv_list">
+        <thead>
+            <tr>
+                <th><input type="checkbox" id="check_all"></th>
+                <th>STT</th>
+                <th>Tên</th>
+                <th>Ảnh</th>
+                <th>Thứ tự</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody id="drapTable">
+            <?php
+            $count = 0;
+            $bnKey = array();
+            foreach ($arrAllAdv as $arrSingleAdv):
+                $count++;
+                ?>
+                <tr>
+                    <td class="row"><input type="checkbox" value="<?= $arrSingleAdv->id ?>" class="selected_bnhan" name="ckb[]"></td>
+                    <td ><?= $count ?></td>
+                    <td ><?= $arrSingleAdv->name ?></td>
+                    <td ><img class="img-list" src="<?= APP_URL . "/upload/" . $arrSingleAdv->img ?>"></td>
+                    <td ><?= $arrSingleAdv->orders ?></td>
+                    <td ><?= $arrSingleAdv->status == 1 ? '<span class="label label-success">Đã bật</span>' : '<span class="label label-warning">Đã tắt</span>' ?></td>
+                    <td>
+                        <!--<a href="edit" class="btn btn-primary" >Sửa</a>-->
+                        <button data-href="<?= APP_URL ?>/adv/delete/<?= $arrSingleAdv->id ?>" 
+                                onclick="deleteSingle(this)" class="btn btn-danger" >Xóa</button>
+                    </td>
+                </tr>
+            <?php endforeach; ?>
+        </tbody>
+    </table>
+</div>
+
+<!-- Modal ssetting -->
+<div class="modal fade" id="modalSetting" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form class="" method="post" action="<?= APP_URL ?>/adv/setting">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Cài đặt quảng cáo</h4>
+                </div>
+                <div class="modal-body">
+                    <!--                    <div class="form-group">
+                                            <label  >Thời gian slide 1 ảnh:</label>
+                                            <input type="number" name="time_slide" class="form-control" value="<?= $time_slide ?>" >
+                                        </div>-->
+                    <div class="form-group">
+                        <label  >Thời gian hiển thị quảng cáo:</label>
+                        <input type="number" name="time_adv" class="form-control" value="<?= $time_adv ?>" >
+                    </div>
+                    <div class="form-group">
+                        <label  >Thời gian hiển thị danh sách xếp hàng:</label>
+                        <input type="number" name="time_queue" class="form-control" value="<?= $time_queue ?>" >
+                    </div>
+                    <hr/>
+                    <p class="text-muted">Chú ý: đơn vị tính bằng "giây"!</p>     
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal add -->
+<div class="modal fade" id="modalAdd" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <form class="" method="post" enctype="multipart/form-data" action="<?= APP_URL ?>/adv/add">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Thêm quảng cáo</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" >Ảnh:</label>
+                        <div class="col-sm-10">
+                            <input type="file" name="img" id="files">
+
+                        </div>
+                        <img id="image" />
+                    </div>   
+
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    //load image
+    document.getElementById("files").onchange = function () {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            // get loaded data and render thumbnail.
+            document.getElementById("image").src = e.target.result;
+        };
+        // read the image file as a data URL.
+        reader.readAsDataURL(this.files[0]);
+    };
+    function deleteSingle(elm, id) {
+        if (confirm("Bạn chắc chắn xóa bản ghi này?")) {
+            window.location.href = $(elm).data('href');
+//            $.ajax({
+//                type: "POST",
+//                url: $(elm).data('href'),
+//                dataType: 'json',
+//                data: {id: id},
+//                success: function (res) {
+//                    console.log(res);
+//                },
+//
+//            });
+        }
+
+    }
+
+
+</script>

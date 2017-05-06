@@ -1,0 +1,23 @@
+<?php if (count($dbs) == 0): ?>   
+     <fieldset style="padding: 0px 10px; border: none; border-top: 1px solid #BBBBBB;"> 
+        <legend style="font-size: 12px; font-weight: bold;">Database Profiler&nbsp;&nbsp;</legend>      
+        <table>
+            <tr><td>No Database</td></tr>
+        </table>
+    </fieldset>            
+<?php else: ?>
+    <?php foreach ($dbs as $name => $db): ?>
+        <fieldset style="padding: 0px 10px; border: none; border-top: 1px solid #BBBBBB;">
+            <legend style="font-size: 12px; font-weight: bold;">Database Profiler:&nbsp;<?= $name ?></legend>   
+            <table>            
+            <?php if (count($db->profiler) == 0): ?>
+                <tr><td>There is no query</td></tr>
+            <?php else: ?>
+                <?php foreach ($db->profiler as $profile): ?>                                        
+                    <tr><td><?= $profile->query ?>&nbsp;&nbsp;</td><td width="20%"> <?= print_r($profile->params, TRUE) ?></td><td width="1%"><?= $profile->elapsed ?></td></tr>
+                <?php endforeach; ?>
+            <?php endif; ?>                                                            
+            </table>
+        </fieldset>                    
+    <?php endforeach; ?>
+<?php endif; ?>

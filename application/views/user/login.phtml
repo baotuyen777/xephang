@@ -1,0 +1,28 @@
+<center>
+	<div style="width: 300px">
+		<?php if ($loginFailed): ?>		
+			<div style="color: #ff0000; font-weight: bold; margin: 10px;">Sai tên đăng nhập hoặc mật khẩu</div>
+		<?php endif; ?>		
+		<form action="/user/login" method="post">
+			<table cellspacing="0" cellpadding="2" border="0">
+				<tr>
+					<td><strong>Tài khoản:</strong></td>
+					<td><input type="text" id="username" class="login_textbox" name="username" style="width: 180px" value="<?= $user->name ?>"/></td>
+				</tr>
+				<tr>
+					<td><strong>Mật khẩu:</strong></td>
+					<td><input type="password" id="password" class="login_textbox" name="password" style="width: 180px"/></td>
+				</tr>
+				<tr>
+					<td> </td>
+					<td><input type="checkbox" title="Ghi nhớ thông tin tài khoản cho lần sau" id="saveme" name="saveme" />
+					Ghi nhớ thông tin</td>
+				</tr>
+				<tr>
+					<td> </td>
+					<td><input type="submit" title="Đăng nhập" style="width: 70px;" value="Đăng nhập" id="Login" class="button"/></td>	
+				</tr>
+			</table>
+		</form>
+	</div>
+</center>

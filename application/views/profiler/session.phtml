@@ -1,0 +1,22 @@
+<fieldset style="padding: 0px 10px; border: none; border-top: 1px solid #BBBBBB;">  
+    <legend style="font-size: 12px; font-weight: bold;">Session Variables</legend>
+    <?php if ( ! count($_SESSION)): ?>
+        <div>No Session variable</div>
+    <?php else: ?>   
+        <table cellpadding="4" cellspacing="1" border="0" width="30%">            
+            <?php foreach ($_SESSION as $key => $value): ?>
+                <tr>
+                    <td width="20%"><b><?= $key ?></b></td>
+                    <td width="80%"><pre><?= print_r($value, TRUE) ?></pre></td>
+                </tr>                                     
+            <?php endforeach; ?>  
+        </table> 
+        <!-- 
+        <?php foreach ($_SESSION as $key => $value): ?>
+            <div style="float: left;"><b><?= $key ?></b></div>
+            <div style="float: left;"><pre><?= print_r($value, TRUE) ?></pre></div>
+            <div style="clear: both;"></div>
+        <?php endforeach; ?>  
+        -->
+    <?php endif; ?>
+</fieldset>

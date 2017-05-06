@@ -1,0 +1,70 @@
+<?php 
+$room = require_once APP_PATH.('config/room.php');
+require_once APP_PATH.('helper/url.php');
+?>
+<div class="box-news">
+        <div class="wrap">
+            <div class="row">
+              <div class="col-xs-12 col-md-12">
+                <div class="panel-main-left pull-left" style="width: 100%;margin-right: 25px;">
+              <div class="panel panel-default">
+                  <div class="panel-heading"><strong>Danh sách bệnh nhân</strong></div>
+                  <div class="panel-body">
+                      <form action="" method="get" id="admin_form">
+                        <div class="well">
+                            <input class="form-control" type="text" name="TEN_BNHAN" id="TEN_BNHAN" value="<?= $search['TEN_BNHAN'] ?>" placeholder="Nhập tên bệnh nhân" style="width: 250px;"/>
+                            <input class="form-control" type="text" name="tc" id="tc" value="<?= $search['tc'] ?>" placeholder="Nhập mã TC" style="width: 250px;margin-top: -34px;margin-left: 30%;"/>
+                            <select class="form-control select2" name="status" style="width: 250px;margin-top: -34px;margin-left: 60%;">
+                                <option value="-1" <?php if($search['status'] == -1): ?>selected<?php endif; ?>>-- Trạng thái --</option>
+                                <option value="0" <?php if($search['status'] == 0): ?>selected<?php endif; ?>>Đang đợi</option>
+                                <option value="1" <?php if($search['status'] == 1): ?>selected<?php endif; ?>>Đang khám</option>
+                                <option value="2" <?php if($search['status'] == 2): ?>selected<?php endif; ?>>Khám xong</option>
+                            </select>
+                            <!--<input class="form-control" type="text" name="status" id="status" value="<?= $search['status'] ?>" placeholder="Nhập mã status" style="width: 250px;margin-top: -34px;margin-left: 60%;"/>-->
+                            <button type="submit" class="ajax-link btn btn-success tooltip-item" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Tim kiếm" style="margin-top: -35px;margin-left: 89%;">Tìm kiếm</button>
+                        </div>
+
+                        <table class="table table-hover table-striped" width="100%">
+                          <tr height="30">
+                            <th><strong>Mã Bệnh Nhân</strong></th>
+                            <th><strong>Tên Bệnh Nhân</strong></th>
+                            <th><strong>Ngày Sinh</strong></th>
+                            <th><strong>Giới Tính</strong></th>
+                            <th><strong>Mã TC</strong></th>
+                            <th><strong>Trạng Thái</strong></th>
+                            <th><strong>Phòng Khám</strong></th>
+                            <th></th>
+                          </tr>
+                          <tbody>
+                          <? foreach ($list as $l) : ?>
+                            <tr class>
+                              <td class="row"><?=$l->MA_BNHAN?></td>
+                              <td class="row"><?=$l->TEN_BNHAN?></td>
+                              <td class="row"><?=$l->NGAY_SINH?></td>
+                              <td class="row"><?=$l->GIOI_TINH?></td>
+                              <td class="row"><?=$l->tc?></td>
+                              <td class="row"><?php if($l->status == 0): ?>Đang đợi<?php endif; ?><?php if($l->status == 1): ?>Đang khám<?php endif; ?><?php if($l->status == 2): ?>Khám xong<?php endif; ?></td>
+                              <td class="row"><?=$room[$l->room]?></td>
+                            </tr>
+                          <? endforeach ?>
+                         </tbody>
+                        </table>
+                        
+                        <?= $pager ?>
+                  </div>
+              </div>
+            </div>
+          </form>
+              </div>
+            </div>
+          </div>
+</div>
+<script>
+  var socket = io.connect('<?=NODE_SERVER?>');
+  socket.on('chatMessage', function(msg){
+    console.log("here");
+    if(msg == "swap" || msg == "call"){
+      location.reload();
+    }
+  });
+</script>

@@ -1,0 +1,45 @@
+*{
+	font-size: 12px;
+}
+.highcharts-container{
+    border: solid 1px #c1c1c1;
+}
+.print{
+    margin-top: 50px;
+    font-family: times new roman;
+    font-weight: 700;
+    font-size: 14px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.print .table > tbody > tr > td{
+    border-top: none;
+    font-size: 16px;
+}
+.form-control{
+    box-shadow: none;
+    border: 1px solid #acacac;
+}
+.form-control:focus{
+    box-shadow: none;
+}
+.order-list .list-group *{
+	color: #000;
+}
+.order-list h5 span{
+	font-size: 10px;
+	font-style: italic;
+}
+.order-list .view-more a{
+	font-size: 10px;
+}
+.list-group-item-warning{
+	background-color: #ff9489;
+}
+.list-group-item-success {
+    background-color: #a0db8e;
+}
+.list-group-item-info {
+    background-color: #63c9ff;
+}

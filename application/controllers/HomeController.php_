@@ -1,0 +1,66 @@
+<?php   
+require_once('BaseController.php');
+require_once(APP_PATH . 'library/CacheLibrary.php');        
+
+class HomeController extends BaseController
+{
+    public function init()
+    {
+        parent::init();              
+    }
+    
+    public function indexAction()
+    {   
+        $this->checkLogin();  
+    	$user = $this->getUser();
+		$permission = require APP_PATH.('config/permission.php');
+		if(array_key_exists($user->uid,$permission)){
+			redirect("/room");
+		}else{
+			redirect("/le-tan");
+		}
+    }   
+
+    public function serviceAction(){
+        $no = (int)$this->getQuery('no',0);
+        if($no < 1)
+            exit;
+
+        $DB_USER = 'homistc2016';
+        $DB_PASS = 'thucuc2016';
+
+        $conn = $this->openConnectOracle($DB_USER,$DB_PASS);
+
+        $arrayQuery = oci_parse($conn, "SELECT PHIEU_KHAM_ID FROM HDON WHERE HDON_ID = '$no'");
+        oci_execute($arrayQuery);
+        $row = oci_fetch_row($arrayQuery);
+
+        if($row != false){
+            $PHIEU_KHAM_ID = $row[0];
+
+            $arrayQueryResult = oci_parse($conn, "SELECT YEU_CAU.BPHAN_YCAU_ID,YEU_CAU.BPHAN_THIEN_ID,HDON_CTIET.TEN_MUC,HDON_CTIET.BNHAN_TRA FROM YEU_CAU INNER JOIN HDON_CTIET ON YEU_CAU.YEU_CAU_ID = HDON_CTIET.YEU_CAU_ID WHERE YEU_CAU.PHIEU_KHAM_ID = '$PHIEU_KHAM_ID'");
+            oci_execute($arrayQueryResult);
+
+            $ouput = array();
+
+            while ($rowResult = oci_fetch_array($arrayQueryResult, OCI_ASSOC+OCI_RETURN_NULLS)) {
+                $maBenh = $rowResult['MA_BENH'];
+                $tenBenh = $rowResult['TEN_BENH'];
+
+                $ouput[] = array(
+                    'TEN_MUC'=>$rowResult['TEN_MUC'],
+                    'BNHAN_TRA'=>$rowResult['BNHAN_TRA'],
+                    'BPHAN_YCAU_ID'=>$rowResult['BPHAN_YCAU_ID'],
+                    'BPHAN_THIEN_ID'=>$rowResult['BPHAN_THIEN_ID'],
+                );
+            }
+            $this->closeConnectOracle($conn);
+            header('Content-Type: application/json');
+            echo json_encode($ouput);
+            exit;
+        }
+    } 
+
+    
+}
+  

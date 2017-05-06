@@ -1,0 +1,24 @@
+<fieldset style="padding: 0px 10px; border: none; border-top: 1px solid #BBBBBB;">  
+    <legend style="font-size: 12px; font-weight: bold;">MemcacheDB</legend>
+    <?php if ( ! isset($memcache)): ?>
+        <div>No MemcacheDB data exists</div>
+    <?php else: ?>
+        <?php $stats = $memcache->stats; ?>
+        <table cellpadding='4' cellspacing='1' border='0' width='100%'>
+        <?php if (count($stats) > 0): ?>
+            <?php foreach ($stats as $label => $keys): ?>
+                <tr>
+                    <td width="50%">
+                        <b><?= $label ?></b>
+                        <?php if (count($keys) > 0): ?>
+                            <?php foreach ($keys as $key): ?>
+                               <br /><span style="margin-left: 30px;"><?= $key ?></span>
+                            <?php endforeach; ?>                                                            
+                        <?php endif; ?>                
+                    </td>
+                </tr>
+            <?php endforeach; ?>               
+        <?php endif; ?>     
+        </table>
+    <?php endif; ?>
+</fieldset>

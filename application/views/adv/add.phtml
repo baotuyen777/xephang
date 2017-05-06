@@ -1,0 +1,110 @@
+<style>
+    #image{
+        max-height: 200px;
+    }
+</style>
+<div class="wrap_page  ">
+    <div class="page-header">
+        <h3 class="text-center"><?= isset($id) ? "Chỉnh sửa" : "Thêm mới" ?></h3>
+    </div>
+    <div>
+        <?php if (isset($mes)): ?>
+            <p class="alert alert-danger">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong>Xảy ra lỗi! </strong><?php echo $mes ?>
+            </p>
+        <?php endif; ?>
+    </div>
+    <div class="wrap_form" >
+
+        <form class="form-horizontal" method="post" enctype="multipart/form-data">
+<!--            <div class="form-group">
+                <label class="control-label col-sm-2" for="name">Tên:</label>
+                <div class="col-sm-6">
+                    <input type="text" name="name" class="form-control">
+                </div>
+            </div>-->
+            <div class="form-group">
+                <label class="control-label col-sm-2" >Ảnh:</label>
+                <div class="col-sm-10">
+                    <input type="file" name="img" id="files">
+                    <img id="image" />
+                </div>
+            </div>
+<!--            <div class="form-group">
+                <label class="control-label col-sm-2" >Thứ tự:</label>
+                <div class="col-sm-2">
+                    <input type="number" name="orders" class="form-control" value="<?= isset($arrSingleAdv->orders) ? $arrSingleAdv->orders : 0 ?>" >
+                </div>
+            </div>-->
+<!--            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <div class="checkbox">
+                        <label><input type="checkbox" name="status" value="1"> Trạng thái</label>
+                    </div>
+                </div>
+            </div>-->
+            <hr/>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                    <a href="<?= APP_URL ?>/adv/list" class="btn btn-default">Hủy bỏ</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    document.getElementById("files").onchange = function () {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            // get loaded data and render thumbnail.
+            document.getElementById("image").src = e.target.result;
+        };
+
+        // read the image file as a data URL.
+        reader.readAsDataURL(this.files[0]);
+    };
+
+    function do_submit(action)
+    {
+        if (!checkSelectedBnhan())
+        {
+            alert("Bạn cần chọn ít nhất 1 bản tin để thực hiện tiếp");
+            return;
+        }
+        if (!confirm("Đây là thao tác không thể khôi phục lại. Bạn có chắc chắn thực hiện"))
+            return;
+
+        var arrayBnhanId = [];
+        $("input.selected_bnhan").each(function () {
+            if (this.checked)
+            {
+                arrayBnhanId.push($(this).val());
+            }
+        });
+        var selectedRoom = $('#swapRoom :selected').val();
+        $.post("/room", {arrayBnhanId: arrayBnhanId, room: selectedRoom, action: "swap"}).done(function (data) {
+            socket.emit('chatMessage', "swap");
+            //location.reload();
+        });
+    }
+
+    function checkSelectedBnhan()
+    {
+        var ok = false;
+        $("input.selected_bnhan").each(function () {
+            if (this.checked)
+            {
+                ok = true;
+                return false;
+            }
+        });
+        return ok;
+    }
+
+</script>

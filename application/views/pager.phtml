@@ -1,0 +1,42 @@
+<?php
+require_once (APP_PATH . 'helper/pager.php');
+$from = $currentPage - 5;
+if ($from < 1) {
+	$from = 1;
+}
+$to = $currentPage + 5;
+if ($to > $totalPages) {
+	$to = $totalPages;
+}
+if (! isset ( $obj )) {
+	$obj = 'bài viết';
+}
+?>
+<div class="text-center">
+    <ul class="pagination"><?php
+        if ($currentPage > 1) {
+									echo '<li>' .pagerLink ( $url, $ext_param, 1, '«' ).'</li>';
+									//echo '<li>' .pagerLink ( $url, $ext_param, $currentPage - 1, '«' ).'</li>';
+								}
+								if ($from > 1) {
+									echo "&nbsp;...&nbsp;...&nbsp;";
+								}
+								for($page = $from; $page <= $to; $page ++) {
+									if ($page == $currentPage) {
+										echo '<li>' . $currentPage . '</li>';
+									} else {
+										
+										echo '<li>' .pagerLink ( $url, $ext_param, $page, $page ). '</li>';
+									}
+								}
+								if ($to < $totalPages) {
+									echo "&nbsp;...&nbsp;...&nbsp;";
+								}
+								if ($currentPage < $totalPages) {
+									//echo '<li>'.pagerLink ( $url, $ext_param, $currentPage + 1, '»' ).'</li>';
+									echo '<li>'.pagerLink ( $url, $ext_param, $totalPages, '»' ).'</li>';
+								}
+								?>    
+    </ul>
+</div>
+

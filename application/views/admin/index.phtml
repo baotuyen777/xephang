@@ -1,0 +1,26 @@
+<table class="table">
+	<tr>
+	<td>Mã ICD 10</td>
+	<td>Tên bệnh</td>
+	<td>TS</td>
+	<td>Nữ</td>
+	<td>TE < 15</td>
+	<td>TS</td>
+	<td>Nữ</td>
+	<td>TS</td>
+	<td>TE < 5</td>
+</tr>
+	<?php foreach($result as $r): ?>
+	<tr>
+		<td><?=$r['MA_BENH']?></td>
+		<td><?=$r['TEN_BENH']?></td>
+		<td><?=$r['total']?></td>
+		<td><?=$r['total_female']?></td>
+		<td><?=$r['total_kids']?></td>
+		<td><?=$r['total_dt']?></td>
+		<td><?php if(!$r['total_female_dt']){ echo 0;}else{ echo $r['total_female_dt']; }?></td>
+		<td><?php if(!$r['total_kids_dt']){ echo 0;}else{ echo $r['total_kids_dt']; }?></td>
+		<td><?php if(!$r['total_kids5_dt']){ echo 0;}else{ echo $r['total_kids5_dt']; }?></td>
+	</tr>
+	<?php endforeach; ?>
+</table>

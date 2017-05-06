@@ -1,0 +1,76 @@
+<?php 
+$room = require_once APP_PATH.('config/room.php');
+?>
+<style type="text/css">
+.showContent{
+    height:450px;
+    overflow-y:scroll;
+    overflow: hidden;
+    margin-top: -20px;
+}
+</style>
+<img src="/images/logo.jpg"><strong style="font-size: 50px;margin-left: 25px;float:right;"><?=$room[$r]?></strong><br>
+<div style="float: right;margin-bottom: 40px;margin-top: -40px;"><div class="ColorPicker_com_colorSlider_colorPreview" style="position: absolute;background-color: forestgreen;width: 30px;height: 30px;"></div><strong style="margin-left: 40px;">Đang khám</strong></div>
+<table class="table table-striped table-bordered sorted_table" style="margin-top: 1%;">
+      <thead>
+        <tr style="font-size: 20px;height: 75px;">
+          <th style="font-size: 20px;">STT</th>
+          <th style="font-size: 20px;">Tên Bệnh nhân</th>
+          <th style="font-size: 20px;">Giới tính</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php $b = $bNhan[0]; ?>
+        <tr style="color: white;font-size: 20px;height: 75px;<?php if($b->status == 1): ?>background-color: forestgreen;<?php endif; ?>">
+          <td style="font-size: 20px;width: 130px;">1</td>
+          <td style="font-size: 20px;"><?=$b->TEN_BNHAN?></td>
+          <td style="font-size: 20px;width: 235px;"><?php if($b->GIOI_TINH == 'M'){echo "Nam";}else{echo "Nữ";}?></td>
+        </tr>
+      </tbody>
+</table>
+<div class="showContent">
+  <table class="table table-striped table-bordered sorted_table">
+      <thead>
+
+      </thead>
+      <tbody id="drapTable">
+      <?php $count = 0;
+        foreach($bNhan as $b):
+          $count++;
+        if($count > 1):
+        ?>
+        <tr style="font-size: 20px;height: 75px;">
+          <td style="font-size: 20px;width: 130px;"><?=$count?></td>
+          <td style="font-size: 20px;"><?=$b->TEN_BNHAN?></td>
+          <td style="font-size: 20px;width: 235px;"><?php if($b->GIOI_TINH == 'M'){echo "Nam";}else{echo "Nữ";}?></td>
+      </tr>
+      <?php 
+      endif;
+      endforeach; ?>
+      </tbody>
+  </table>
+</div>
+<script>
+  var socket = io.connect('<?=NODE_SERVER?>');
+
+  socket.on('chatMessage', function(msg){
+    console.log("here");
+    if(msg == "swap" || msg == "callBNhan" || msg == "pushBNhan"){
+      location.reload();
+    }
+  });
+</script>
+<script>
+var div = $('.showContent');
+var cachePos = -1;
+setInterval(function(){
+    var pos = div.scrollTop();
+    div.scrollTop(pos + 2);
+    if(pos != cachePos){
+      cachePos = pos;
+    }else{
+      div.scrollTop(0);
+      cachePos = -1;   
+    }
+}, 150);
+</script>
