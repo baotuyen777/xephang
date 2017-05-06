@@ -14,7 +14,7 @@ class AdvModel extends BaseModel {
 
     public function getRow($id) {
         $db = $this->getSlaveDb();
-        $sql = "SELECT * from " . $this->table ;
+        $sql = "SELECT * from " . $this->table;
         return $db->fetchRow($sql);
     }
 
@@ -40,6 +40,12 @@ class AdvModel extends BaseModel {
                 $db->query($sql, array($arrSingleKey['value'], $arrSingleKey['key']));
             }
         }
+    }
+
+    public function getRandom() {
+        $db = $this->getSlaveDb();
+        $sql = "SELECT `img` from `" . $this->table . "` ORDER BY RAND() LIMIT 5";
+        return $db->fetchAll($sql);
     }
 
     public function addOption($data) {

@@ -14,33 +14,10 @@ $room = require_once APP_PATH . ('config/room.php');
         position: absolute;
         left: 0;
         top: 0;
-        background: #ccc
+        background: #fff
     }
 
-    .carousel-fade .carousel-inner .item {
-        opacity: 0;
-        transition-property: opacity;
-        -webkit-transition: opacity 1s; /*adjust timing here */
-        -moz-transition: opacity 1s;
-        -o-transition: opacity 1s;
-        transition: opacity 1.9s;
-    }
-    .carousel-fade .carousel-inner .active {
-        opacity: 1;
-    }
-    .carousel-fade .carousel-inner .active.left,
-    .carousel-fade .carousel-inner .active.right {
-        left: 0;
-        opacity: 0;
-        z-index: 1;
-    }
-    .carousel-fade .carousel-inner .next.left,
-    .carousel-fade .carousel-inner .prev.right {
-        opacity: 1;
-    }
-    .carousel-fade .carousel-control {
-        z-index: 2;
-    }
+
 </style>
 <img src="/images/logo.jpg"><strong style="font-size: 50px;margin-left: 25px;float:right;"><?= $room[$r] ?></strong><br>
 <div style="float: right;margin-bottom: 40px;margin-top: -40px;"><div class="ColorPicker_com_colorSlider_colorPreview" style="position: absolute;background-color: forestgreen;width: 30px;height: 30px;"></div><strong style="margin-left: 40px;">Đang khám</strong></div>
@@ -185,7 +162,7 @@ $room = require_once APP_PATH . ('config/room.php');
     </div>
 </div>
 <!--slideadv-->
-<div id="slideAdv" class="carousel slide carousel-fade" data-ride="carousel">
+<div id="slideAdv" class="carousel slide carousel-fade hidden" data-ride="carousel">
     <!-- Indicators -->
     <ol class="carousel-indicators">
         <li data-target="#slideAdv" data-slide-to="0" class="active"></li>
@@ -194,22 +171,28 @@ $room = require_once APP_PATH . ('config/room.php');
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
-
-        <div class="item active">
-            <img src="https://www.w3schools.com/bootstrap/chicago.jpg" alt="Los Angeles" style="width:100%;">
-            <div class="carousel-caption">
-                <h3>Los Angeles</h3>
-                <p>LA is always so much fun!</p>
+        <?php
+        $i = 0;
+        foreach ($advRandom as $adv):
+            $i++;
+            $active = $i == 1 ? "active" : "";
+            ?>
+            <div class="item <?php echo $active ?>">
+                <img src="<?= APP_URL ?>/upload/<?= $adv->img ?>"  style="width:100%;">
+                <div class="carousel-caption">
+                    <h3>Los Angeles</h3>
+                    <p>LA is always so much fun!</p>
+                </div>
             </div>
-        </div>
+        <?php endforeach; ?>
 
-        <div class="item">
-            <img src="https://www.w3schools.com/bootstrap/chicago.jpg" alt="Chicago" style="width:100%;">
-            <div class="carousel-caption">
-                <h3>Chicago</h3>
-                <p>Thank you, Chicago!</p>
-            </div>
-        </div>
+        <!--        <div class="item">
+                    <img src="https://www.w3schools.com/bootstrap/chicago.jpg" alt="Chicago" style="width:100%;">
+                    <div class="carousel-caption">
+                        <h3>Chicago</h3>
+                        <p>Thank you, Chicago!</p>
+                    </div>
+                </div>-->
     </div>
 
     <!-- Left and right controls -->
@@ -239,6 +222,9 @@ $room = require_once APP_PATH . ('config/room.php');
         pause: "false",
 
     });
+    setInterval(function () {
+        $('#slideAdv').toggleClass('hidden');
+    }, <?= $timeAdv ?>)
 
     var div = $('.showContent');
     var cachePos = -1;

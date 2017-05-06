@@ -4,7 +4,7 @@ $menu[1] = array(
 	'/le-tan'=>'Nhận bệnh nhân',
 	'/room'=>'Danh sách bệnh nhân',
 	'/room/queue'=>' Hiển thị lên màn hình',
-        '/adv/list'=>'Quan ly quang cao'
+        '/adv/list'=>'Quản lý quảng cáo'
 );
 $menu[2] = array(
 	'/le-tan'=>'Nhận bệnh nhân',

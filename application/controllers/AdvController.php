@@ -62,10 +62,10 @@ class AdvController extends BaseController {
             $data = array(
 //                array('key' => 'time_slide',
 //                    'value' => isset($_POST['time_slide']) ? $_POST['time_slide'] : 15000),
-                array('key' => 'time_queue',
-                    'value' => isset($_POST['time_queue']) ? $_POST['time_queue'] : 15000),
+//                array('key' => 'time_queue',
+//                    'value' => isset($_POST['time_queue']) ? $_POST['time_queue'] : 15000),
                 array('key' => 'time_adv',
-                    'value' => isset($_POST['time_adv']) ? $_POST['time_adv'] : 15000),
+                    'value' => isset($_POST['time_adv']) ? $_POST['time_adv'] : 15),
             );
             if ($this->advModel->updateAdvSetting($data)) {
                 redirect(APP_URL . '/adv');
