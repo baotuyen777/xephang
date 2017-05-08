@@ -38,7 +38,7 @@ class AdvController extends BaseController {
                 $data = array(
                     'name' => $_FILES['img']['name'],
 //                    'orders' => $_POST['orders'],
-                    'img' => $_FILES['img']['name'],
+                    'img' => $upload['filePath'],
 //                    'status' => isset($_POST['status']) ? $_POST['status'] : 0,
                 );
                 if ($this->advModel->add($data)) {
@@ -81,17 +81,26 @@ class AdvController extends BaseController {
         $row = $this->advModel->getRow($id);
 
         $filename = PUBLIC_PATH . "/upload/" . $row->img;
-//        var_dump($filename);die;
         if (file_exists($filename)) {
-            if (unlink($filename)) {
-                if ($this->advModel->delete($id)) {
-//                echo 1;
-//                redirect(APP_URL . '/adv');
+            unlink($filename);
+        }
+        $this->advModel->delete($id);
+        redirect(APP_URL . '/adv');
+    }
+
+    public function delmultiAction($listId) {
+        $this->layout->isQueue = 2;
+        if (!empty($listId)) {
+            $arrId = json_decode($listId);
+            foreach ($arrId as $id) {
+                $row = $this->advModel->getRow($id);
+                $filename = PUBLIC_PATH . "/upload/" . $row->img;
+                if (file_exists($filename)) {
+                    unlink($filename);
                 }
+                $this->advModel->delete($id);
             }
         }
-
-//        }
         redirect(APP_URL . '/adv');
     }
 
@@ -102,9 +111,25 @@ class AdvController extends BaseController {
                 'mes' => 'File không hợp lệ!'
             );
         }
-        $target_dir = PUBLIC_PATH . "/upload/";
-        $target_file = $target_dir . basename($file_upload["img"]["name"]);
+        $year = date("Y");
+        $month = date("m");
+        $uploadPath = PUBLIC_PATH . "/upload/";
+        $yearPath = $uploadPath . $year;
+        $monthPath = $uploadPath . $year . "/" . $month;
+
+        if (file_exists($yearPath)) {
+            if (file_exists($monthPath) == false) {
+                mkdir($monthPath, 0777, true);
+            }
+        } else {
+            mkdir($yearPath, 0777, true);
+        }
+        $filePath = $year . "/" . $month . "/" . basename($file_upload["img"]["name"]);
+        $target_file = $uploadPath . $filePath;
+//        var_dump($filePath);die;
         $status = 1;
+        $mes = '';
+        $return = array();
         $imageFileType = pathinfo($target_file, PATHINFO_EXTENSION);
 // Check if image file is a actual image or fake image
         $check = getimagesize($file_upload["img"]["tmp_name"]);
@@ -131,14 +156,17 @@ class AdvController extends BaseController {
         if ($status != 0) {
             if (move_uploaded_file($file_upload["img"]["tmp_name"], $target_file)) {
                 $mes = "" . basename($file_upload["img"]["name"]) . " tải lên thành công!.";
+                chmod($target_file, 0777);
             } else {
                 $mes = "Xảy ra lỗi trong quá trình upload file (phân quyền, sự cố mạng)";
             }
         }
-        return array(
+        $return = array(
             'status' => $status,
-            'mes' => $mes
+            'mes' => $mes,
+            'filePath' => $filePath
         );
+        return $return;
     }
 
 }

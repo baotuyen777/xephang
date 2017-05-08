@@ -1,3 +1,6 @@
+<?php
+$timthumb = APP_URL . '/timthumb.php?src=';
+?>
 <style type="text/css">
     .img-list{
         max-height: 50px;
@@ -13,20 +16,24 @@
 <div class="page-header">
     <h3>Danh sách quảng cáo</h3>
 </div>
+<div class="action ">
+    <button type="button" class="btn btn-success " data-toggle="modal" data-target="#modalAdd">Thêm mới</button>
+    <button type="button" class="btn btn-danger " onclick="deleteMulti()" >Xóa các mục đã chọn</button>
+    <button type="button" class="btn btn-info " data-toggle="modal" data-target="#modalSetting">Cài đặt</button>
+    <hr/>
+</div>
 <div class="col-md-12" style="padding-left:0">
     <!--<a href="<?= APP_URL ?>/adv/detail" class="btn btn-success"></a>-->
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#modalAdd">Thêm mới</button>
-    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#modalSetting">Cài đặt</button>
-    <hr/>
+
     <table class="table table-striped table-bordered sorted_table adv_list">
         <thead>
             <tr>
-                <th><input type="checkbox" id="check_all"></th>
+                <th><input type="checkbox" onclick="checkAll(this)"></th>
                 <th>STT</th>
                 <th>Tên</th>
                 <th>Ảnh</th>
-                <th>Thứ tự</th>
-                <th>Trạng thái</th>
+                <!--<th>Thứ tự</th>-->
+                <!--<th>Trạng thái</th>-->
                 <th>Hành động</th>
             </tr>
         </thead>
@@ -38,12 +45,12 @@
                 $count++;
                 ?>
                 <tr>
-                    <td class="row"><input type="checkbox" value="<?= $arrSingleAdv->id ?>" class="selected_bnhan" name="ckb[]"></td>
+                    <td class="row"><input type="checkbox" value="<?= $arrSingleAdv->id ?>" class="ckb" name="ckb[]"></td>
                     <td ><?= $count ?></td>
                     <td ><?= $arrSingleAdv->name ?></td>
-                    <td ><img class="img-list" src="<?= APP_URL . "/upload/" . $arrSingleAdv->img ?>"></td>
-                    <td ><?= $arrSingleAdv->orders ?></td>
-                    <td ><?= $arrSingleAdv->status == 1 ? '<span class="label label-success">Đã bật</span>' : '<span class="label label-warning">Đã tắt</span>' ?></td>
+                    <td ><img class="img-list" src="<?= $timthumb . APP_URL . "/upload/" . $arrSingleAdv->img ?>&h=150&w=300"></td>
+                    <!--<td ><?= $arrSingleAdv->orders ?></td>-->
+                    <!--<td ><?= $arrSingleAdv->status == 1 ? '<span class="label label-success">Đã bật</span>' : '<span class="label label-warning">Đã tắt</span>' ?></td>-->
                     <td>
                         <!--<a href="edit" class="btn btn-primary" >Sửa</a>-->
                         <button data-href="<?= APP_URL ?>/adv/delete/<?= $arrSingleAdv->id ?>" 
@@ -108,7 +115,7 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" >Ảnh:</label>
                         <div class="col-sm-10">
-                            <input type="file" name="img" id="files">
+                            <input type="file" name="img" id="files" accept="image/*">
 
                         </div>
                         <img id="image" />
@@ -152,6 +159,32 @@
 //            });
         }
 
+    }
+    function deleteMulti() {
+//        console.log(1231);
+        var arrId = [];
+        $('.ckb:checked').each(function () {
+            arrId.push($(this).val());
+        });
+        if (arrId.length == 0) {
+            alert('Bạn chưa chọn dòng để xóa!')
+            return;
+        }
+
+        listId = '[' + arrId.toString() + ']';
+        window.location.href = '<?php echo APP_URL ?>/adv/delmulti/' + listId;
+
+    }
+    function checkAll(elm) {
+        if (elm.checked) {
+            $('.ckb').each(function () {
+                this.checked = true;
+            });
+        } else {
+            $('.ckb').each(function () {
+                this.checked = false;
+            });
+        }
     }
 
 
